@@ -1,0 +1,25 @@
+Grundinstallation XAMPP-Umgebung:
+-Installiere XAMPP 7.1
+
+Grundinstallation f�r Entwicklungsumgebung:
+-Download xdebug
+-php.ini:
+    output_buffering=Off
+    ...
+    zend_extension = D:\xampp\php\ext\php_xdebug-2.7.0-7.1-vc14-x86_64.dll
+    xdebug.remote_enable=1
+    xdebug.remote_handler=dbgp
+    xdebug.remote_mode=req
+    xdebug.remote_host=127.0.0.1
+    xdebug.remote_port=9000
+-D:\xampp\php zu PATH hinzuf�gen
+
+Grundinstallation Zend Framework und Doctrine:
+-cmd nach d:\xampp\htdocs\hallenscan
+-create minimal skeleton application: composer create-project -s dev zendframework/skeleton-application .
+-Inkompatible MVC Version entfernen: composer remove zendframework/zend-mvc
+-Modul installation: composer require doctrine/doctrine-orm-module
+-Tool installation:  composer require doctrine/migrations
+-Modul installation: composer require zendframework/zend-navigation
+-Modul installation: composer require zendframework/zend-session
+
