@@ -1,7 +1,7 @@
 Grundinstallation XAMPP-Umgebung:
 -Installiere XAMPP 7.1
 
-Grundinstallation f�r Entwicklungsumgebung:
+Grundinstallation fuer Entwicklungsumgebung:
 -Download xdebug
 -php.ini:
     output_buffering=Off
@@ -12,7 +12,7 @@ Grundinstallation f�r Entwicklungsumgebung:
     xdebug.remote_mode=req
     xdebug.remote_host=127.0.0.1
     xdebug.remote_port=9000
--D:\xampp\php zu PATH hinzuf�gen
+-D:\xampp\php zu PATH hinzufuegen
 
 Grundinstallation Zend Framework und Doctrine:
 -cmd nach d:\xampp\htdocs\hallenscan
@@ -23,3 +23,7 @@ Grundinstallation Zend Framework und Doctrine:
 -Modul installation: composer require zendframework/zend-navigation
 -Modul installation: composer require zendframework/zend-session
 
+Doctrine Migrations:
+Neue Migration erzeugen: .\vendor\bin\doctrine-module migrations:generate
+Migration anwenden: .\vendor\bin\doctrine-module migrations:migrate
+Migration setzen: .\vendor\bin\doctrine-module migrations:migrate [prev|next|first]

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Global Configuration Override
  *
@@ -10,7 +11,17 @@
  * control, so do not include passwords or other sensitive information in this
  * file.
  */
-
 return [
-    // ...
+    'doctrine' => [
+        // migrations configuration
+        'migrations_configuration' => [
+            'orm_default' => [
+                'directory' => 'data/Migrations',
+                'name' => 'Doctrine Database Migrations',
+                'namespace' => 'Migrations',
+                'table' => 'migrations',
+            ],
+        ],
+    ],
+        // ...
 ];
