@@ -9,7 +9,7 @@ abstract class AbstractStammdatenTable extends AbstractTable {
     /**
      * @ORM\Column(name="aktiv")  
      */
-    protected $aktiv;
+    private $aktiv;
 
     public function getAktiv() {
         return $this->aktiv;

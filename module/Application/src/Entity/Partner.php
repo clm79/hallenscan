@@ -13,13 +13,18 @@ class Partner extends AbstractStammdatenTable {
     /**
      * @ORM\Column(name="name")  
      */
-    protected $name;
+    private $name;
+
+    /**
+     * @ORM\Column(name="eigene_depot_kennung")  
+     */
+    private $eigeneDepotKennung;
 
     /**
      * @ORM\OneToMany(targetEntity="\Application\Entity\Hub", mappedBy="hub")
      * @ORM\JoinColumn(name="interne_id", referencedColumnName="hub_id")
      */
-    protected $hubs;
+    private $hubs;
 
     /**
      * Constructor.
@@ -32,12 +37,20 @@ class Partner extends AbstractStammdatenTable {
         return $this->name;
     }
 
+    public function getEigeneDepotKennung() {
+        return $this->eigeneDepotKennung;
+    }
+
     public function getHubs() {
         return $this->hubs;
     }
 
     public function setName($name) {
         $this->name = $name;
+    }
+
+    public function setEigeneDepotKennung($eigeneDepotKennung) {
+        $this->eigeneDepotKennung = $eigeneDepotKennung;
     }
 
     public function setHubs($hubs) {
