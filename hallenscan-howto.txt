@@ -22,12 +22,17 @@ Grundinstallation Zend Framework und Doctrine:
 -Tool installation:  composer require doctrine/migrations
 -Modul installation: composer require zendframework/zend-navigation
 -Modul installation: composer require zendframework/zend-session
+-Modul installation (wird von forms gebraucht): composer require zendframework/zend-i18n
 
 Update aus git-Repository:
 URL: https://github.com/clm79/hallenscan
 Download der vendor-Abhängigkeiten: composer install
 
+
 Doctrine Migrations:
 Neue Migration erzeugen: .\vendor\bin\doctrine-module migrations:generate
 Migration anwenden: .\vendor\bin\doctrine-module migrations:migrate
 Migration setzen: .\vendor\bin\doctrine-module migrations:migrate [prev|next|first]
+
+Hinweise:
+Unterverzeichnis unter view\application Benennung wie die Controller-Klasse (bordero-file => BorderoFileController)

@@ -14,6 +14,25 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
+    'navigation' => [
+        'default' => [
+            [
+                'label' => 'Home',
+                'route' => 'home',
+            ],
+            [
+                'label' => 'Bordero',
+                'route' => 'bordero-file',
+                'pages' => [
+                    [
+                        'label' => 'Import',
+                        'route' => 'bordero-file',
+                        'action' => 'import',
+                    ],
+                ],
+            ],
+        ],
+    ],    
     'router' => [
         'routes' => [
             'home' => [
@@ -36,11 +55,27 @@ return [
                     ],
                 ],
             ],
+            'bordero-file' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/bordero-file[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\BorderoFileController::class,
+                        'action' => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\BorderoFileController::class => Controller\Factory\BorderoFileControllerFactory::class,
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            Service\BorderoFileManager::class => Service\Factory\BorderoFileManagerFactory::class,
         ],
     ],
     'view_manager' => [

@@ -1,0 +1,10 @@
+<?php
+$form = $this->form;
+$form->get('submit')->setAttributes(['class' => 'btn btn-primary']);
+$form->prepare();
+?>
+<h1>Bordero-Dateien importieren</h1>
+<p>Bitte das Einlesen neuer Bordero-Dateien best&auml;tigen:</p>
+<?= $this->form()->openTag($form); ?>
+<?= $this->formElement($form->get('submit')); ?>
+<?= $this->form()->closeTag(); ?>
