@@ -23,6 +23,10 @@ Grundinstallation Zend Framework und Doctrine:
 -Modul installation: composer require zendframework/zend-navigation
 -Modul installation: composer require zendframework/zend-session
 
+Update aus git-Repository:
+URL: https://github.com/clm79/hallenscan
+Download der vendor-Abhängigkeiten: composer install
+
 Doctrine Migrations:
 Neue Migration erzeugen: .\vendor\bin\doctrine-module migrations:generate
 Migration anwenden: .\vendor\bin\doctrine-module migrations:migrate
