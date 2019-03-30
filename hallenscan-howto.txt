@@ -22,12 +22,19 @@ Grundinstallation Zend Framework und Doctrine:
 -Tool installation:  composer require doctrine/migrations
 -Modul installation: composer require zendframework/zend-navigation
 -Modul installation: composer require zendframework/zend-session
--Modul installation (wird von forms gebraucht): composer require zendframework/zend-i18n
+-Modul installation (wird von forms gebraucht, nicht in modules.config!): composer require zendframework/zend-i18n
+-Modul installation: composer require zendframework/zend-log
+-Modul installation: composer require zendframework/zend-db
 
 Update aus git-Repository:
 URL: https://github.com/clm79/hallenscan
 Download der vendor-Abhängigkeiten: composer install
+copy config\autoload\local.php.dist config\autoload\local.php und anpassen
 
+Development-Mode ein/aus:
+composer development-status
+composer development-enable
+composer development-disable
 
 Doctrine Migrations:
 Neue Migration erzeugen: .\vendor\bin\doctrine-module migrations:generate

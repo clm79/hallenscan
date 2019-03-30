@@ -17,6 +17,18 @@ final class Version20190328153518 extends AbstractMigration {
     }
 
     public function up(Schema $schema): void {
+        $table = $schema->createTable('zend_log');
+        $table->addColumn('interne_id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('timestamp', 'datetime', ['notnull' => true]);
+        $table->addColumn('priority', 'integer', ['notnull' => true]);
+        $table->addColumn('priorityName', 'string', ['notnull' => true]);
+        $table->addColumn('message', 'string', ['notnull' => false]);
+        $table->addColumn('extra_requestId', 'string', ['notnull' => false]);
+        $table->addColumn('extra_requestMethod', 'string', ['notnull' => false]);
+        $table->addColumn('extra_requestURI', 'string', ['notnull' => false]);
+        $table->addColumn('extra_requestParams', 'string', ['notnull' => false]);
+        $table->setPrimaryKey(['interne_id']);
+        
         $table = $schema->createTable('partner');
         $table->addColumn('interne_id', 'integer', ['autoincrement' => true]);
         $table->addColumn('zeitstempel', 'datetime', ['notnull' => true]);
@@ -85,6 +97,7 @@ final class Version20190328153518 extends AbstractMigration {
         $schema->dropTable('bordero');
         $schema->dropTable('hub');
         $schema->dropTable('partner');
+        $schema->dropTable('zend_log');
     }
 
 }

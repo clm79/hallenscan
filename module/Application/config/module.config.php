@@ -14,6 +14,27 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
+    'log' => [
+        'Logger' => [
+            'writers' => [
+                [
+                    'name' => 'db',
+                    'options' => [
+                        'db' => 'Zend\Db\Adapter\Adapter',
+                        'table' => 'zend_log',
+                    ],
+                ],
+            ],
+            'processors' => [
+                'requestId' => [
+                    'name' => \Zend\Log\Processor\RequestId::class,
+                ],
+                'requestURI' => [
+                    'name' => \Application\Util\Log\LogProcessor::class,
+                ],
+            ],            
+        ],
+    ],
     'navigation' => [
         'default' => [
             [
@@ -32,7 +53,7 @@ return [
                 ],
             ],
         ],
-    ],    
+    ],
     'router' => [
         'routes' => [
             'home' => [
@@ -76,6 +97,9 @@ return [
     'service_manager' => [
         'factories' => [
             Service\BorderoFileManager::class => Service\Factory\BorderoFileManagerFactory::class,
+        ],
+        'abstract_factories' => [
+            'Zend\Log\LoggerAbstractServiceFactory',
         ],
     ],
     'view_manager' => [

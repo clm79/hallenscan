@@ -10,7 +10,9 @@ class BorderoFileManagerFactory implements FactoryInterface {
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null) {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
-        return new BorderoFileManager($entityManager);
+        $logger = $container->get('Logger');
+        
+        return new BorderoFileManager($entityManager, $logger);
     }
 
 }
