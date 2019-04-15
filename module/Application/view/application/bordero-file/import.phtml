@@ -4,6 +4,7 @@ $form->get('submit')->setAttributes(['class' => 'btn btn-primary']);
 $form->prepare();
 ?>
 <h1>Bordero-Dateien importieren</h1>
+<?php echo $this->flashMessenger()->render(); ?>
 <p>Bitte das Einlesen neuer Bordero-Dateien best&auml;tigen:</p>
 <?= $this->form()->openTag($form); ?>
 <?= $this->formElement($form->get('submit')); ?>
@@ -13,9 +14,6 @@ $form->prepare();
     <thead>
         <tr>
             <th>Name</th>
-            <th>Eigene Kennung</th>
-            <th>Import-Pfad</th>
-            <th>Import-Pattern</th>
         </tr>
     </thead>
     <tbody>
@@ -26,9 +24,6 @@ $form->prepare();
                 <tr style="text-decoration: line-through; color: lightgray">
                 <?php endif; ?>
                 <td><?= $this->escapeHtml($partner->getName()); ?></td>
-                <td><?= $this->escapeHtml($partner->getEigeneDepotKennung()); ?></td>
-                <td><?= $this->escapeHtml($partner->getBorderoImportPfad()); ?></td>
-                <td><?= $this->escapeHtml($partner->getBorderoImportPattern()); ?></td>
             </tr>
         <?php endforeach; ?>    
     </tbody>

@@ -14,6 +14,9 @@ Grundinstallation fuer Entwicklungsumgebung:
     xdebug.remote_port=9000
 -D:\xampp\php zu PATH hinzufuegen
 
+Anpassung php.ini:
+max_execution_time=120
+
 Grundinstallation Zend Framework und Doctrine:
 -cmd nach d:\xampp\htdocs\hallenscan
 -create minimal skeleton application: composer create-project -s dev zendframework/skeleton-application .
@@ -25,6 +28,8 @@ Grundinstallation Zend Framework und Doctrine:
 -Modul installation (wird von forms gebraucht, nicht in modules.config!): composer require zendframework/zend-i18n
 -Modul installation: composer require zendframework/zend-log
 -Modul installation: composer require zendframework/zend-db
+-Modul installation: composer require symfony/finder
+-Modul installation: composer require zendframework/zend-mvc-plugin-flashmessenger
 
 Update aus git-Repository:
 URL: https://github.com/clm79/hallenscan

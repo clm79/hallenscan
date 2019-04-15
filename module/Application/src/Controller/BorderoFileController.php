@@ -46,10 +46,12 @@ class BorderoFileController extends AbstractActionController {
             if ($form->isValid()) {
                 // Get validated form data.
                 //$data = $form->getData();
-                $this->borderoFileManager->importBorderoFiles();
+                
+                /* @var $result Application\Service\BorderoFileImportResult */
+                $result = $this->borderoFileManager->importBorderoFiles();
 
-                // Redirect the user to "index" page.
-                return $this->redirect()->toRoute('bordero-file');
+                $this->flashMessenger()->addMessage($result->getCount().' neue Bordero-Datei(en) importiert.');
+                return $this->redirect()->toRoute('bordero-file', ['action' => 'import']);
             }
             // Render the view template.
             return new ViewModel([
@@ -60,7 +62,8 @@ class BorderoFileController extends AbstractActionController {
             // Render the view template.
             return new ViewModel([
                 'partners' => $partners,
-                'form' => $form
+                'form' => $form,
+                'messages' => $this->flashMessenger()->getMessages()
             ]);
         }
     }
