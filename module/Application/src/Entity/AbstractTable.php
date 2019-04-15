@@ -11,12 +11,12 @@ abstract class AbstractTable {
      * @ORM\GeneratedValue
      * @ORM\Column(name="interne_id")   
      */
-    private $InterneId;
+    protected $InterneId;
 
     /**
      * @ORM\Column(name="zeitstempel")  
      */
-    private $zeitstempel;
+    protected $zeitstempel;
 
     public function getInterneId() {
         return $this->InterneId;

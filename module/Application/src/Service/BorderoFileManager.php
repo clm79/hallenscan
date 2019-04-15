@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Zend\Log\Logger;
+use Application\Entity\Partner;
 
 class BorderoFileManager {
 
@@ -25,6 +26,14 @@ class BorderoFileManager {
     }
 
     public function importBorderoFiles() {
+        $partners = $this->entityManager->getRepository(Partner::class)->findByAktiv(true);
+        foreach ($partners as $partner) {
+            $this->importPartnerBorderoFiles($partner);
+        }
         $this->logger->info("Finished ".__METHOD__);
+    }
+    
+    private function importPartnerBorderoFiles(Partner $partner) {
+        
     }
 }

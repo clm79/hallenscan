@@ -21,6 +21,16 @@ class Partner extends AbstractStammdatenTable {
     private $eigeneDepotKennung;
 
     /**
+     * @ORM\Column(name="bordero_import_pfad")  
+     */
+    private $borderoImportPfad;
+
+    /**
+     * @ORM\Column(name="bordero_import_pattern")  
+     */
+    private $borderoImportPattern;
+    
+    /**
      * @ORM\OneToMany(targetEntity="\Application\Entity\Hub", mappedBy="hub")
      * @ORM\JoinColumn(name="interne_id", referencedColumnName="hub_id")
      */
@@ -41,6 +51,14 @@ class Partner extends AbstractStammdatenTable {
         return $this->eigeneDepotKennung;
     }
 
+    public function getBorderoImportPfad() {
+        return $this->borderoImportPfad;
+    }
+
+    public function getBorderoImportPattern() {
+        return $this->borderoImportPattern;
+    }
+
     public function getHubs() {
         return $this->hubs;
     }
@@ -53,8 +71,17 @@ class Partner extends AbstractStammdatenTable {
         $this->eigeneDepotKennung = $eigeneDepotKennung;
     }
 
+    public function setBorderoImportPfad($borderoImportPfad) {
+        $this->borderoImportPfad = $borderoImportPfad;
+    }
+
+    public function setBorderoImportPattern($borderoImportPattern) {
+        $this->borderoImportPattern = $borderoImportPattern;
+    }
+
     public function setHubs($hubs) {
         $this->hubs = $hubs;
     }
+
 
 }

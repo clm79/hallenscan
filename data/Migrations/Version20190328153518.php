@@ -28,13 +28,15 @@ final class Version20190328153518 extends AbstractMigration {
         $table->addColumn('extra_requestURI', 'string', ['notnull' => false]);
         $table->addColumn('extra_requestParams', 'string', ['notnull' => false]);
         $table->setPrimaryKey(['interne_id']);
-        
+
         $table = $schema->createTable('partner');
         $table->addColumn('interne_id', 'integer', ['autoincrement' => true]);
         $table->addColumn('zeitstempel', 'datetime', ['notnull' => true]);
         $table->addColumn('aktiv', 'boolean', ['notnull' => true]);
         $table->addColumn('name', 'string', ['notnull' => true]);
         $table->addColumn('eigene_depot_kennung', 'string', ['notnull' => true]);
+        $table->addColumn('bordero_import_pfad', 'string', ['notnull' => true]);
+        $table->addColumn('bordero_import_pattern', 'string', ['notnull' => true]);
         $table->setPrimaryKey(['interne_id']);
 
         $table = $schema->createTable('hub');
@@ -89,6 +91,12 @@ final class Version20190328153518 extends AbstractMigration {
         $table->addColumn('wareninhalt', 'string', ['notnull' => true]);
         $table->setPrimaryKey(['interne_id']);
         $table->addForeignKeyConstraint('sendung', ['sendung_id'], ['interne_id'], [], 'colli_sendung_id_fk');
+    }
+
+    public function postUp(Schema $schema): void {
+        $this->connection->executeQuery('INSERT INTO partner VALUES (1, NOW(), 1, "CTL", "096", "\\\\\\\\BFSERVER\\\\apps\\\\CTL_FTP", "20*.096");');
+        $this->connection->executeQuery('INSERT INTO partner VALUES (2, NOW(), 1, "VTL", "04961", "\\\\\\\\BFSERVER\\\\apps\\\\VTL_FTP\In", "04961_de_20*.txt");');
+        $this->connection->executeQuery('INSERT INTO partner VALUES (3, NOW(), 0, "Inaktiv", "XYZ", "C:\\\\Temp\\\\Inaktiv", "*.txt");');
     }
 
     public function down(Schema $schema): void {

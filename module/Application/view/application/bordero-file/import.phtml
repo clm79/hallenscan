@@ -8,3 +8,28 @@ $form->prepare();
 <?= $this->form()->openTag($form); ?>
 <?= $this->formElement($form->get('submit')); ?>
 <?= $this->form()->closeTag(); ?>
+<table class="table table-hover">
+    <caption>Partner</caption>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Eigene Kennung</th>
+            <th>Import-Pfad</th>
+            <th>Import-Pattern</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($partners as $partner): ?>
+            <?php if ($partner->getAktiv()): ?>
+                <tr>
+                <?php else: ?>
+                <tr style="text-decoration: line-through; color: lightgray">
+                <?php endif; ?>
+                <td><?= $this->escapeHtml($partner->getName()); ?></td>
+                <td><?= $this->escapeHtml($partner->getEigeneDepotKennung()); ?></td>
+                <td><?= $this->escapeHtml($partner->getBorderoImportPfad()); ?></td>
+                <td><?= $this->escapeHtml($partner->getBorderoImportPattern()); ?></td>
+            </tr>
+        <?php endforeach; ?>    
+    </tbody>
+</table>
