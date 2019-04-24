@@ -51,6 +51,7 @@ class BorderoFileController extends AbstractActionController {
                 $result = $this->borderoFileManager->importBorderoFiles();
 
                 $this->flashMessenger()->addMessage($result->getCount().' neue Bordero-Datei(en) importiert.');
+                $this->flashMessenger()->addMessage($result->getCountError().' Fehler beim Import aufgetreten.');
                 return $this->redirect()->toRoute('bordero-file', ['action' => 'import']);
             }
             // Render the view template.

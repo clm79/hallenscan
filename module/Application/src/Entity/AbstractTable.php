@@ -11,23 +11,23 @@ abstract class AbstractTable {
      * @ORM\GeneratedValue
      * @ORM\Column(name="interne_id")   
      */
-    protected $InterneId;
+    protected $interneId;
 
     /**
-     * @ORM\Column(name="zeitstempel")  
+     * @ORM\Column(name="zeitstempel", type="datetime")  
      */
     protected $zeitstempel;
 
     public function getInterneId() {
-        return $this->InterneId;
+        return $this->interneId;
     }
 
     public function getZeitstempel() {
         return $this->zeitstempel;
     }
 
-    public function setInterneId($InterneId) {
-        $this->InterneId = $InterneId;
+    public function setInterneId($interneId) {
+        $this->interneId = $interneId;
     }
 
     public function setZeitstempel($zeitstempel) {

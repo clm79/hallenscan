@@ -14,14 +14,26 @@ namespace Application\Service;
  * @author cmartin
  */
 class BorderoFileImportResult {
+
     /* @var $count int */
     private $count = 0;
-    
+    /* @var $countError int */
+    private $countError = 0;
+
     public function incCount() {
         $this->count++;
     }
-    
+
+    public function incCountError() {
+        $this->countError++;
+    }
+
     public function getCount() {
         return $this->count;
     }
+
+    public function getCountError() {
+        return $this->countError;
+    }
+    
 }

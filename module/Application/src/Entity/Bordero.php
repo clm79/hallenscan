@@ -3,10 +3,11 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="bordero") 
+ * @ORM\Table(name="bordero")
  */
 class Bordero extends AbstractTable {
 
@@ -17,27 +18,27 @@ class Bordero extends AbstractTable {
     private $hub;
 
     /**
-     * @ORM\Column(name="import_dateiname")  
+     * @ORM\Column(name="import_dateiname")
      */
     private $importDateiname;
 
     /**
-     * @ORM\Column(name="nummer")  
+     * @ORM\Column(name="nummer")
      */
     private $nummer;
 
     /**
-     * @ORM\Column(name="datum")  
+     * @ORM\Column(name="datum", type="date")
      */
     private $datum;
 
     /**
-     * @ORM\Column(name="empfangs_depot_kennung")  
+     * @ORM\Column(name="empfangs_depot_kennung")
      */
     private $empfangsDepotKennung;
 
     /**
-     * @ORM\Column(name="release_kennung")  
+     * @ORM\Column(name="release_kennung")
      */
     private $releaseKennung;
 

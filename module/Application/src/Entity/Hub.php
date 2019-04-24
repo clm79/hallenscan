@@ -3,6 +3,7 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -20,6 +21,11 @@ class Hub extends AbstractStammdatenTable {
      * @ORM\Column(name="name")  
      */
     private $name;
+
+    /**
+     * @ORM\Column(name="kennung")  
+     */
+    private $kennung;
 
     /**
      * @ORM\OneToMany(targetEntity="\Application\Entity\Bordero", mappedBy="hub")
@@ -48,6 +54,14 @@ class Hub extends AbstractStammdatenTable {
 
     public function setName($name) {
         $this->name = $name;
+    }
+
+    public function getKennung() {
+        return $this->kennung;
+    }
+
+    public function setKennung($kennung) {
+        $this->kennung = $kennung;
     }
 
     public function getBorderos() {
