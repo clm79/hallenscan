@@ -96,7 +96,17 @@ final class Version20190328153518 extends AbstractMigration {
     public function postUp(Schema $schema): void {
         $this->connection->executeQuery('INSERT INTO partner VALUES (1, NOW(), 1, "CTL", "096", "\\\\\\\\BFSERVER\\\\apps\\\\CTL_FTP", "20*.096");');
         $this->connection->executeQuery('INSERT INTO partner VALUES (2, NOW(), 1, "VTL", "04961", "\\\\\\\\BFSERVER\\\\apps\\\\VTL_FTP\\\\In", "04961_de_20*.txt");');
-        $this->connection->executeQuery('INSERT INTO partner VALUES (3, NOW(), 0, "Inaktiv", "XYZ", "C:\\\\Temp\\\\Inaktiv", "*.txt");');
+        $this->connection->executeQuery('INSERT INTO partner VALUES (3, NOW(), 0, "Test Inaktiv", "XYZ", "C:\\\\Temp\\\\Inaktiv", "*.txt");');
+        
+        $this->connection->executeQuery('INSERT INTO hub VALUES (1, 1, NOW(), 1, "Homberg");');
+        $this->connection->executeQuery('INSERT INTO hub VALUES (2, 1, NOW(), 1, "Grolsheim");');
+        $this->connection->executeQuery('INSERT INTO hub VALUES (3, 1, NOW(), 1, "Aurach");');
+        $this->connection->executeQuery('INSERT INTO hub VALUES (4, 1, NOW(), 0, "Bottrop");');
+        $this->connection->executeQuery('INSERT INTO hub VALUES (5, 1, NOW(), 0, "Lauenau");');
+        $this->connection->executeQuery('INSERT INTO hub VALUES (6, 2, NOW(), 1, "Fulda");');
+        $this->connection->executeQuery('INSERT INTO hub VALUES (7, 2, NOW(), 0, "Hannover");');
+        $this->connection->executeQuery('INSERT INTO hub VALUES (8, 2, NOW(), 0, "Gelsenkirchen");');
+        $this->connection->executeQuery('INSERT INTO hub VALUES (9, 3, NOW(), 1, "Test Stuttgart");');
     }
 
     public function down(Schema $schema): void {

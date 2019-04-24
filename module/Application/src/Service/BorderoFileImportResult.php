@@ -17,7 +17,7 @@ class BorderoFileImportResult {
     /* @var $count int */
     private $count = 0;
     
-    public function inc() {
+    public function incCount() {
         $this->count++;
     }
     

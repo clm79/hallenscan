@@ -31,7 +31,7 @@ class Partner extends AbstractStammdatenTable {
     private $borderoImportPattern;
     
     /**
-     * @ORM\OneToMany(targetEntity="\Application\Entity\Hub", mappedBy="hub")
+     * @ORM\OneToMany(targetEntity="\Application\Entity\Hub", mappedBy="partner")
      * @ORM\JoinColumn(name="interne_id", referencedColumnName="hub_id")
      */
     private $hubs;

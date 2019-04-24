@@ -59,6 +59,7 @@ class BorderoFileController extends AbstractActionController {
             ]);
         } else {
             $partners = $this->entityManager->getRepository(Partner::class)->findAll();
+            
             // Render the view template.
             return new ViewModel([
                 'partners' => $partners,

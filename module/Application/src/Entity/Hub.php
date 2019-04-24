@@ -22,7 +22,7 @@ class Hub extends AbstractStammdatenTable {
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="\Application\Entity\Bordero", mappedBy="bordero")
+     * @ORM\OneToMany(targetEntity="\Application\Entity\Bordero", mappedBy="hub")
      * @ORM\JoinColumn(name="interne_id", referencedColumnName="bordero_id")
      */
     private $borderos;

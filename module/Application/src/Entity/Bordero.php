@@ -42,7 +42,7 @@ class Bordero extends AbstractTable {
     private $releaseKennung;
 
     /**
-     * @ORM\OneToMany(targetEntity="\Application\Entity\Sendung", mappedBy="sendung")
+     * @ORM\OneToMany(targetEntity="\Application\Entity\Sendung", mappedBy="bordero")
      * @ORM\JoinColumn(name="interne_id", referencedColumnName="sendung_id")
      */
     private $sendungen;

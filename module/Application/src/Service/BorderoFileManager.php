@@ -46,7 +46,7 @@ class BorderoFileManager {
         foreach($finder as $file) {
             $pathname = $file->getPathname();
             //$this->logger->debug($partner->getName().': '.$pathname);
-            $result->inc();
+            $result->incCount();
         }
     }
 

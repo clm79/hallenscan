@@ -10,21 +10,30 @@ $form->prepare();
 <?= $this->formElement($form->get('submit')); ?>
 <?= $this->form()->closeTag(); ?>
 <table class="table table-hover">
-    <caption>Partner</caption>
+    <caption>Aktive Partner</caption>
     <thead>
         <tr>
             <th>Name</th>
+            <th>Pfad</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($partners as $partner): ?>
             <?php if ($partner->getAktiv()): ?>
                 <tr>
-                <?php else: ?>
-                <tr style="text-decoration: line-through; color: lightgray">
-                <?php endif; ?>
-                <td><?= $this->escapeHtml($partner->getName()); ?></td>
-            </tr>
+                    <td>
+                        <?= $this->escapeHtml($partner->getName()); ?>
+                        <ul>
+                            <?php foreach ($partner->getHubs() as $hub): ?>
+                                <?php if ($hub->getAktiv()): ?>
+                                    <li><?= $this->escapeHtml($hub->getName()); ?></li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>    
+                        </ul>
+                    </td>
+                    <td><?= $this->escapeHtml($partner->getBorderoImportPfad()); ?></td>
+                </tr>
+            <?php endif; ?>
         <?php endforeach; ?>    
     </tbody>
 </table>

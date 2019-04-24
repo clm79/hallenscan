@@ -87,7 +87,7 @@ class Sendung extends AbstractTable {
     private $sendungsnummer;
 
     /**
-     * @ORM\OneToMany(targetEntity="\Application\Entity\Colli", mappedBy="colli")
+     * @ORM\OneToMany(targetEntity="\Application\Entity\Colli", mappedBy="sendung")
      * @ORM\JoinColumn(name="interne_id", referencedColumnName="colli_id")
      */
     private $collis;
