@@ -23,6 +23,7 @@ final class Version20190328153518 extends AbstractMigration {
         $table->addColumn('priority', 'integer', ['notnull' => true]);
         $table->addColumn('priorityName', 'string', ['notnull' => true]);
         $table->addColumn('message', 'string', ['notnull' => false]);
+        $table->addColumn('extra_classMethod', 'string', ['notnull' => false]);
         $table->addColumn('extra_requestId', 'string', ['notnull' => false]);
         $table->addColumn('extra_requestMethod', 'string', ['notnull' => false]);
         $table->addColumn('extra_requestURI', 'string', ['notnull' => false]);

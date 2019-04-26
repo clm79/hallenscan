@@ -1,10 +1,24 @@
 <?php
+
+use Application\Controller\BorderoFileController;
+use Zend\Session\Container;
+
 $form = $this->form;
 $form->get('submit')->setAttributes(['class' => 'btn btn-primary']);
 $form->prepare();
+
+$sessionContainer = new Container('session');
+$requestId = $sessionContainer[BorderoFileController::SESSION_KEY_REQUEST_ID];
 ?>
 <h1>Bordero-Dateien importieren</h1>
 <?php echo $this->flashMessenger()->render(); ?>
+<?php if (isset($requestId)): ?>
+    <p>
+    <ul>
+        <li><a href="<?= $this->url('log', ['action' => 'list'], ['query' => ['requestId' => $requestId]]) ?>">Log-Protokoll des letzten Imports</a></li>
+    </ul>
+    </p>
+<?php endif; ?>
 <p>Bitte das Einlesen neuer Bordero-Dateien best&auml;tigen:</p>
 <?= $this->form()->openTag($form); ?>
 <?= $this->formElement($form->get('submit')); ?>
@@ -13,8 +27,7 @@ $form->prepare();
     <caption>Aktive Partner</caption>
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Pfad</th>
+            <th>Name/Hub</th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +44,6 @@ $form->prepare();
                             <?php endforeach; ?>    
                         </ul>
                     </td>
-                    <td><?= $this->escapeHtml($partner->getBorderoImportPfad()); ?></td>
                 </tr>
             <?php endif; ?>
         <?php endforeach; ?>    

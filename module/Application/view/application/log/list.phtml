@@ -1,0 +1,49 @@
+<?php
+
+use Application\Controller\LogController;
+use Application\Entity\ZendLog;
+?>
+<h1>Log-Protokoll Liste</h1>
+<?php echo $this->flashMessenger()->render(); ?>
+<table class="table table-hover">
+    <caption>Log (max. <?= LogController::MAX_LIMIT ?> Eintr&auml;ge)</caption>
+    <thead>
+        <tr>
+            <th>Zeitstempel</th>
+            <th>Prio</th>
+            <th>Nachricht</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        /* @var $log ZendLog */
+        foreach ($logs as $log):
+            switch ($log->getPriority()) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    $textClass = "text-danger bg-danger";
+                    break;
+                case 4:
+                case 5:
+                    $textClass = "text-warning bg-warning";
+                    break;
+                case 6:
+                    $textClass = "text-success bg-success";
+                    break;
+                case 7:
+                    $textClass = "text-muted bg-muted";
+                    break;
+                default:
+                    $textClass = "text-unknown bg-unknown";
+            }
+            ?>
+            <tr class="<?= $textClass; ?>">
+                <td><?= $this->escapeHtml($log->getTimestamp()->format('Y-m-d H:i:s')); ?></td>
+                <td><?= $this->escapeHtml($log->getPriorityName()); ?></td>
+                <td><?= $this->escapeHtml($log->getMessage()); ?></td>
+            </tr>
+<?php endforeach; ?>    
+    </tbody>
+</table>

@@ -46,7 +46,7 @@ class BorderoFileManager {
         foreach ($partners as $partner) {
             $this->importPartnerBorderoFiles($partner, $result);
         }
-        $this->logger->info("Import abgeschlossen " . __METHOD__ . " Neue Bordero-Dateien: " . $result->getCount() . " / Fehler: " . $result->getCountError() . " / Warnungen: " . $result->getCountWarning());
+        $this->logger->info("Import abgeschlossen. Neue Bordero-Dateien: " . $result->getCount() . " / Fehler: " . $result->getCountError() . " / Warnungen: " . $result->getCountWarning(), ["classMethod"=>__METHOD__]);
 
         return $result;
     }
@@ -79,15 +79,15 @@ class BorderoFileManager {
                     $this->entityManager->flush();
                 } else {
                     $result->incCountError();
-                    $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $fileInfo->getFilename() . "' mit unbekanntem Bordero-Format: '" . $borderoFormat . "'");
+                    $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' mit unbekanntem Bordero-Format: '" . $borderoFormat . "'", ["classMethod"=>__METHOD__]);
                 }
             } else {
                 $result->incCountError();
-                $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $fileInfo->getFilename() . "' kann erste Zeile nicht einlesen!");
+                $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' kann erste Zeile nicht einlesen!", ["classMethod"=>__METHOD__]);
             }
         } else {
             $result->incCountError();
-            $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $fileInfo->getFilename() . "' ist leer!");
+            $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' ist leer!", ["classMethod"=>__METHOD__]);
         }
         $file = null;
     }
@@ -141,7 +141,7 @@ class BorderoFileManager {
                             for ($i = 0; $i < $colliCount; $i++) {
                                 if ($colliIndex >= count($sendungsElement->getSatzHs())) {
                                     $result->incCountWarning();
-                                    $this->logger->warn("Warnung " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' Anzahl F-Packstuecke<>H-Packstuecke Position:" . $sendung->getBorderoPosition());
+                                    $this->logger->warn("Borderofile '" . $file->getFilename() . "' Anzahl F-Packstuecke<>H-Packstuecke Position:" . $sendung->getBorderoPosition(), ["classMethod"=>__METHOD__]);
                                     break;
                                 }
                                 $colli = new Colli();
@@ -160,11 +160,11 @@ class BorderoFileManager {
                     $result->incCount();
                 } else {
                     $result->incCountError();
-                    $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' mit ungueltiger E-Depot-Kennung: '" . $borderoDocument->getHeader()->getEmpfangsDepotKennung() . "'!");
+                    $this->logger->err("Borderofile '" . $file->getFilename() . "' mit ungueltiger E-Depot-Kennung: '" . $borderoDocument->getHeader()->getEmpfangsDepotKennung() . "'!", ["classMethod"=>__METHOD__]);
                 }
             } else {
                 $result->incCountError();
-                $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' mit nicht definierter HUB-Kennung: '" . $borderoDocument->getHeader()->getVersandDepotKennung() . "'!");
+                $this->logger->err("Borderofile '" . $file->getFilename() . "' mit nicht definierter HUB-Kennung: '" . $borderoDocument->getHeader()->getVersandDepotKennung() . "'!", ["classMethod"=>__METHOD__]);
             }
         }
     }

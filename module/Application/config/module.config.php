@@ -52,6 +52,17 @@ return [
                     ],
                 ],
             ],
+            [
+                'label' => 'Log-Protokoll',
+                'route' => 'log',
+                'pages' => [
+                    [
+                        'label' => 'Liste',
+                        'route' => 'log',
+                        'action' => 'list',
+                    ],
+                ],
+            ],
         ],
     ],
     'router' => [
@@ -70,6 +81,9 @@ return [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/application[/:action]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],                    
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action' => 'index',
@@ -80,8 +94,24 @@ return [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/bordero-file[/:action]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],                    
                     'defaults' => [
                         'controller' => Controller\BorderoFileController::class,
+                        'action' => 'index',
+                    ],
+                ],
+            ],
+            'log' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/log[/:action]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],                    
+                    'defaults' => [
+                        'controller' => Controller\LogController::class,
                         'action' => 'index',
                     ],
                 ],
@@ -92,6 +122,7 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\BorderoFileController::class => Controller\Factory\BorderoFileControllerFactory::class,
+            Controller\LogController::class => Controller\Factory\LogControllerFactory::class,
         ],
     ],
     'service_manager' => [
@@ -102,9 +133,11 @@ return [
             'Zend\Log\LoggerAbstractServiceFactory',
         ],
     ],
+    'session_containers' => [
+        'session'
+    ],    
     'view_manager' => [
         'display_not_found_reason' => true,
-        'display_exceptions' => true,
         'doctype' => 'HTML5',
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',

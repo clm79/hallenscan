@@ -27,7 +27,7 @@ class Bordero128Reader {
         $headerLine = $file->fgets();
         if (!$headerLine) {
             $result->incCountError();
-            $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann Header nicht einlesen (Zeile " . $currentLineNumber . ")!");
+            $this->logger->err("Borderofile '" . $file->getFilename() . "' kann Header nicht einlesen (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
             return NULL;
         }
 
@@ -44,7 +44,7 @@ class Bordero128Reader {
                 $satzart = self::parseString(substr($satzLine, 0, 1));
                 if (!$satzart) {
                     $result->incCountError();
-                    $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann Satz-Art nicht ermitteln (Zeile " . $currentLineNumber . ")!");
+                    $this->logger->err("Borderofile '" . $file->getFilename() . "' kann Satz-Art nicht ermitteln (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                     return NULL;
                 }
 
@@ -52,7 +52,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzA($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann A-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann A-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $document->setSatzA($satz);
@@ -60,7 +60,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzB($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann B-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann B-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $sendung = new Bordero128SendungsElement();
@@ -70,7 +70,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzC($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann C-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann C-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $sendung->setSatzC($satz);
@@ -78,7 +78,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzD($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann D-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann D-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $sendung->setSatzD($satz);
@@ -86,7 +86,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzE($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann E-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann E-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $sendung->setSatzE($satz);
@@ -94,7 +94,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzF($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann F-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann F-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $sendung->addSatzF($satz);
@@ -102,7 +102,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzH($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann H-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann H-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $sendung->addSatzH($satz);
@@ -110,7 +110,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzI($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann I-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann I-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $sendung->setSatzI($satz);
@@ -118,7 +118,7 @@ class Bordero128Reader {
                     $satz = $this->parseLineSatzJ($satzLine);
                     if (!$satz) {
                         $result->incCountError();
-                        $this->logger->err("Fehler " . __METHOD__ . ": Borderofile '" . $file->getFilename() . "' kann J-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!");
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann J-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
                     $sendung->setSatzJ($satz);
