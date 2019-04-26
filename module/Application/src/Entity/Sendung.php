@@ -88,6 +88,16 @@ class Sendung extends AbstractTable {
     private $sendungsnummer;
 
     /**
+     * @ORM\Column(name="gewicht")  
+     */
+    private $gewicht;
+
+    /**
+     * @ORM\Column(name="hinweis_text")  
+     */
+    private $hinweisText;
+
+    /**
      * @ORM\OneToMany(targetEntity="\Application\Entity\Colli", mappedBy="sendung")
      * @ORM\JoinColumn(name="interne_id", referencedColumnName="colli_id")
      */
@@ -223,6 +233,22 @@ class Sendung extends AbstractTable {
 
     public function setCollis($collis) {
         $this->collis = $collis;
+    }
+
+    public function getGewicht() {
+        return $this->gewicht;
+    }
+
+    public function setGewicht($gewicht) {
+        $this->gewicht = $gewicht;
+    }
+
+    public function getHinweisText() {
+        return $this->hinweisText;
+    }
+
+    public function setHinweisText($hinweisText) {
+        $this->hinweisText = $hinweisText;
     }
 
 }

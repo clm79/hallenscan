@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace Application\Service;
+namespace Application\IO\Bordero;
 
 /**
  * Description of BorderoFileImportResult
@@ -14,11 +14,13 @@ namespace Application\Service;
  * @author cmartin
  */
 class BorderoFileImportResult {
-
     /* @var $count int */
+
     private $count = 0;
     /* @var $countError int */
     private $countError = 0;
+    /* @var $countWarning int */
+    private $countWarning = 0;
 
     public function incCount() {
         $this->count++;
@@ -28,6 +30,10 @@ class BorderoFileImportResult {
         $this->countError++;
     }
 
+    public function incCountWarning() {
+        $this->countWarning++;
+    }
+
     public function getCount() {
         return $this->count;
     }
@@ -35,5 +41,9 @@ class BorderoFileImportResult {
     public function getCountError() {
         return $this->countError;
     }
-    
+
+    public function getCountWarning() {
+        return $this->countWarning;
+    }
+
 }

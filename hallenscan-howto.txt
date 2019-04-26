@@ -40,7 +40,7 @@ copy config\autoload\local.php.dist config\autoload\local.php und anpassen
 Development-Mode ein/aus:
 composer development-status
 composer development-enable
-composer development-disable
+composer development-disable (und data\cache leeren)
 
 Doctrine Migrations:
 Neue Migration erzeugen: .\vendor\bin\doctrine-module migrations:generate

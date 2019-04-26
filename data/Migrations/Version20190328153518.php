@@ -79,8 +79,10 @@ final class Version20190328153518 extends AbstractMigration {
         $table->addColumn('empfaenger_ort', 'string', ['notnull' => true]);
         $table->addColumn('empfaenger_land', 'string', ['notnull' => true]);
         $table->addColumn('sendungsnummer', 'string', ['notnull' => true])->setComment('Barcode der Sendung');
+        $table->addColumn('gewicht', 'integer', ['notnull' => false]);
+        $table->addColumn('hinweis_text', 'string', ['notnull' => false]);
         $table->setPrimaryKey(['interne_id']);
-        $table->addForeignKeyConstraint('bordero', ['bordero_id'], ['interne_id'], [], 'sendung_bordero_id_fk');
+        $table->addForeignKeyConstraint('bordero', ['bordero_id'], ['interne_id'], ['onDelete' => 'CASCADE'], 'sendung_bordero_id_fk');
 
         $table = $schema->createTable('colli');
         $table->addColumn('interne_id', 'integer', ['autoincrement' => true]);
@@ -89,14 +91,16 @@ final class Version20190328153518 extends AbstractMigration {
         $table->addColumn('barcode', 'string', ['notnull' => true]);
         $table->addColumn('anzahl_lademittel', 'integer', ['notnull' => true]);
         $table->addColumn('lademittelart', 'string', ['notnull' => true]);
-        $table->addColumn('wareninhalt', 'string', ['notnull' => true]);
+        $table->addColumn('wareninhalt', 'string', ['notnull' => false]);
         $table->setPrimaryKey(['interne_id']);
-        $table->addForeignKeyConstraint('sendung', ['sendung_id'], ['interne_id'], [], 'colli_sendung_id_fk');
+        $table->addForeignKeyConstraint('sendung', ['sendung_id'], ['interne_id'], ['onDelete' => 'CASCADE'], 'colli_sendung_id_fk');
     }
 
     public function postUp(Schema $schema): void {
-        $this->connection->executeQuery('INSERT INTO partner VALUES (1, NOW(), 1, "CTL", "096", "\\\\\\\\BFSERVER\\\\apps\\\\CTL_FTP", "20*.096");');
-        $this->connection->executeQuery('INSERT INTO partner VALUES (2, NOW(), 0, "VTL", "04961", "\\\\\\\\BFSERVER\\\\apps\\\\VTL_FTP\\\\In", "04961_de_20*.txt");');
+//        $this->connection->executeQuery('INSERT INTO partner VALUES (1, NOW(), 1, "CTL", "096", "\\\\\\\\BFSERVER\\\\apps\\\\CTL_FTP", "20*.096");');
+//        $this->connection->executeQuery('INSERT INTO partner VALUES (2, NOW(), 0, "VTL", "04961", "\\\\\\\\BFSERVER\\\\apps\\\\VTL_FTP\\\\In", "04961_de_20*.txt");');
+        $this->connection->executeQuery('INSERT INTO partner VALUES (1, NOW(), 1, "CTL", "096", "D:\\\\Temp\\\\hallenscan_testdata\\\\CTL_FTP", "20*.096");');
+        $this->connection->executeQuery('INSERT INTO partner VALUES (2, NOW(), 0, "VTL", "04961", "D:\\\\Temp\\\\hallenscan_testdata\\\\VTL_FTP\\\\In", "04961_de_20*.txt");');
         $this->connection->executeQuery('INSERT INTO partner VALUES (3, NOW(), 0, "Test Inaktiv", "XYZ", "C:\\\\Temp\\\\Inaktiv", "*.txt");');
         
         $this->connection->executeQuery('INSERT INTO hub VALUES (1, 1, NOW(), 1, "Homberg", "900");');
