@@ -12,8 +12,11 @@ use Application\IO\Bordero\Bordero128Document;
 use Application\IO\Bordero\Bordero128Reader;
 use Application\IO\Bordero\Bordero128SatzF;
 use Application\IO\Bordero\Bordero128SendungsElement;
+use Application\IO\Bordero\Bordero512Const;
+use Application\IO\Bordero\Bordero512Document;
+use Application\IO\Bordero\Bordero512Reader;
+use Application\IO\Bordero\Bordero512SendungsElement;
 use Application\IO\Bordero\BorderoFileImportResult;
-use DateTime;
 use SplFileObject;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -46,7 +49,7 @@ class BorderoFileManager {
         foreach ($partners as $partner) {
             $this->importPartnerBorderoFiles($partner, $result);
         }
-        $this->logger->info("Import abgeschlossen. Neue Bordero-Dateien: " . $result->getCount() . " / Fehler: " . $result->getCountError() . " / Warnungen: " . $result->getCountWarning(), ["classMethod"=>__METHOD__]);
+        $this->logger->info("Import abgeschlossen. Neue Bordero-Dateien: " . $result->getCount() . " / Fehler: " . $result->getCountError() . " / Warnungen: " . $result->getCountWarning(), ["classMethod" => __METHOD__]);
 
         return $result;
     }
@@ -74,20 +77,20 @@ class BorderoFileManager {
                 if (strcmp($borderoFormat, Bordero128Const::PACKAGE_HEADER) == 0) {
                     $this->importBorderoFile128($partner, $file, $result);
                     $this->entityManager->flush();
-                } else if (strcmp($borderoFormat, "@@PHBORD512") == 0) {
+                } else if (strcmp($borderoFormat, Bordero512Const::PACKAGE_HEADER) == 0) {
                     $this->importBorderoFile512($partner, $file, $result);
                     $this->entityManager->flush();
                 } else {
                     $result->incCountError();
-                    $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' mit unbekanntem Bordero-Format: '" . $borderoFormat . "'", ["classMethod"=>__METHOD__]);
+                    $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' mit unbekanntem Bordero-Format: '" . $borderoFormat . "'", ["classMethod" => __METHOD__]);
                 }
             } else {
                 $result->incCountError();
-                $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' kann erste Zeile nicht einlesen!", ["classMethod"=>__METHOD__]);
+                $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' kann erste Zeile nicht einlesen!", ["classMethod" => __METHOD__]);
             }
         } else {
             $result->incCountError();
-            $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' ist leer!", ["classMethod"=>__METHOD__]);
+            $this->logger->err("Borderofile '" . $fileInfo->getFilename() . "' ist leer!", ["classMethod" => __METHOD__]);
         }
         $file = null;
     }
@@ -141,7 +144,7 @@ class BorderoFileManager {
                             for ($i = 0; $i < $colliCount; $i++) {
                                 if ($colliIndex >= count($sendungsElement->getSatzHs())) {
                                     $result->incCountWarning();
-                                    $this->logger->warn("Borderofile '" . $file->getFilename() . "' Anzahl F-Packstuecke<>H-Packstuecke Position:" . $sendung->getBorderoPosition(), ["classMethod"=>__METHOD__]);
+                                    $this->logger->warn("Borderofile '" . $file->getFilename() . "' Anzahl F-Packstuecke<>H-Packstuecke Position:" . $sendung->getBorderoPosition(), ["classMethod" => __METHOD__]);
                                     break;
                                 }
                                 $colli = new Colli();
@@ -160,27 +163,89 @@ class BorderoFileManager {
                     $result->incCount();
                 } else {
                     $result->incCountError();
-                    $this->logger->err("Borderofile '" . $file->getFilename() . "' mit ungueltiger E-Depot-Kennung: '" . $borderoDocument->getHeader()->getEmpfangsDepotKennung() . "'!", ["classMethod"=>__METHOD__]);
+                    $this->logger->err("Borderofile '" . $file->getFilename() . "' mit ungueltiger E-Depot-Kennung: '" . $borderoDocument->getHeader()->getEmpfangsDepotKennung() . "'!", ["classMethod" => __METHOD__]);
                 }
             } else {
                 $result->incCountError();
-                $this->logger->err("Borderofile '" . $file->getFilename() . "' mit nicht definierter HUB-Kennung: '" . $borderoDocument->getHeader()->getVersandDepotKennung() . "'!", ["classMethod"=>__METHOD__]);
+                $this->logger->err("Borderofile '" . $file->getFilename() . "' mit nicht definierter HUB-Kennung: '" . $borderoDocument->getHeader()->getVersandDepotKennung() . "'!", ["classMethod" => __METHOD__]);
             }
         }
     }
 
     private function importBorderoFile512(Partner $partner, SplFileObject $file, BorderoFileImportResult $result) {
-        $bordero = new Bordero();
-        $bordero->setHub($partner->getHubs()[0]);
-        $bordero->setZeitstempel(new DateTime());
-        $bordero->setImportDateiname($file->getFilename());
-        $bordero->setNummer("123");
-        $bordero->setDatum(new DateTime("2019-01-31"));
-        $bordero->setEmpfangsDepotKennung("096");
-        $bordero->setReleaseKennung("512");
-        $this->entityManager->persist($bordero);
+        $borderoReader = new Bordero512Reader($this->logger);
 
-        $result->incCount();
+        /* @var $borderoDocument Bordero512Document */
+        $borderoDocument = $borderoReader->readFile($file, $result);
+        if ($borderoDocument) {
+            $hub = $this->entityManager->getRepository(Hub::class)->findOneBy(['partner' => $partner->getInterneId(), 'kennung' => $borderoDocument->getHeader()->getVersandDepotKennung(), 'aktiv' => true]);
+            if ($hub) {
+                if (strcmp($borderoDocument->getHeader()->getEmpfangsDepotKennung(), $partner->getEigeneDepotKennung()) == 0) {
+                    $bordero = new Bordero();
+                    $bordero->setHub($hub);
+                    $bordero->setZeitstempel(new \DateTime());
+                    $bordero->setImportDateiname($file->getFilename());
+                    $bordero->setNummer($borderoDocument->getSatzA00()->getBorderoNummer());
+                    $bordero->setDatum($borderoDocument->getSatzA00()->getBorderoDatum());
+                    $bordero->setEmpfangsDepotKennung($borderoDocument->getHeader()->getEmpfangsDepotKennung());
+                    $bordero->setReleaseKennung($borderoDocument->getSatzA00()->getReleaseKennung());
+                    $this->entityManager->persist($bordero);
+
+                    /* @var $sendungsElement Bordero512SendungsElement */
+                    foreach ($borderoDocument->getSendungen() as $sendungsElement) {
+                        $sendung = new Sendung();
+                        $sendung->setBordero($bordero);
+                        $sendung->setZeitstempel(new \DateTime());
+                        $sendung->setBorderoPosition($sendungsElement->getSatzG00()->getPosition());
+
+                        $shpB00 = $sendungsElement->getSatzB00ByAdressArt(Bordero512Const::ADRESS_ART_VERSENDER);
+                        if (is_null($shpB00)) {
+                            $result->incCountWarning();
+                            $this->logger->warn("Borderofile '" . $file->getFilename() . "' Sendung ohne Absender! Position:" . $sendung->getBorderoPosition(), ["classMethod" => __METHOD__]);
+                            continue;
+                        }
+                        $conB00 = $sendungsElement->getSatzB00ByAdressArt(Bordero512Const::ADRESS_ART_EMPFAENGER);
+                        if (is_null($conB00)) {
+                            $result->incCountWarning();
+                            $this->logger->warn("Borderofile '" . $file->getFilename() . "' Sendung ohne Empfaenger! Position:" . $sendung->getBorderoPosition(), ["classMethod" => __METHOD__]);
+                            continue;
+                        }
+
+                        $sendung->setVersenderName1($shpB00->getName1());
+                        $sendung->setVersenderName2($shpB00->getName2());
+                        $sendung->setVersenderStrasse($shpB00->getStrasse());
+                        $sendung->setVersenderPlz($shpB00->getPlz());
+                        $sendung->setVersenderOrt($shpB00->getOrt());
+                        $sendung->setVersenderLand($shpB00->getLand());
+                        $sendung->setEmpfaengerName1($conB00->getName1());
+                        $sendung->setEmpfaengerName2($conB00->getName2());
+                        $sendung->setEmpfaengerStrasse($conB00->getStrasse());
+                        $sendung->setEmpfaengerPlz($conB00->getPlz());
+                        $sendung->setEmpfaengerOrt($conB00->getOrt());
+                        $sendung->setEmpfaengerLand($conB00->getLand());
+                        $sendung->setSendungsnummer($sendungsElement->getSatzG00()->getSendungsNummer());
+                        $sendung->setGewicht(round($sendungsElement->getSatzG00()->getTatsaechlichesGewicht()));
+                        $hinweisText = NULL;
+                        if($sendungsElement->getSatzH10()) {
+                            $h10 = $sendungsElement->getSatzH10();
+                            $hinweisText = $h10->getFreierText1();
+                            if($h10->getFreierText2()) $hinweisText .= $h10->getFreierText2 ();
+                            if($h10->getFreierText3()) $hinweisText .= $h10->getFreierText3 ();
+                        }
+                        $sendung->setHinweisText($hinweisText);
+                        $this->entityManager->persist($sendung);
+                    }
+
+                    $result->incCount();
+                } else {
+                    $result->incCountError();
+                    $this->logger->err("Borderofile '" . $file->getFilename() . "' mit ungueltiger E-Depot-Kennung: '" . $borderoDocument->getHeader()->getEmpfangsDepotKennung() . "'!", ["classMethod" => __METHOD__]);
+                }
+            } else {
+                $result->incCountError();
+                $this->logger->err("Borderofile '" . $file->getFilename() . "' mit nicht definierter HUB-Kennung: '" . $borderoDocument->getHeader()->getVersandDepotKennung() . "'!", ["classMethod" => __METHOD__]);
+            }
+        }
     }
 
 }

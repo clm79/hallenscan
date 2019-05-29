@@ -63,6 +63,7 @@ class Bordero128Reader {
                         $this->logger->err("Borderofile '" . $file->getFilename() . "' kann B-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
                         return NULL;
                     }
+                    // neues Sendungs-Element anlegen
                     $sendung = new Bordero128SendungsElement();
                     $document->addSendung($sendung);
                     $sendung->setSatzB($satz);
