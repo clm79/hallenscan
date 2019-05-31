@@ -86,6 +86,22 @@ class Bordero512Reader {
                         return NULL;
                     }
                     $sendung->setSatzH10($satz);
+                } else if (strcmp($satzart, Bordero512SatzD00::SATZART) == 0) {
+                    $satzD00 = $this->parseLineSatzD00($satzLine);
+                    if (!$satzD00) {
+                        $result->incCountError();
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann D00-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
+                        return NULL;
+                    }
+                    $sendung->addSatzD00($satzD00);
+                } else if (strcmp($satzart, Bordero512SatzF00::SATZART) == 0) {
+                    $satzF00 = $this->parseLineSatzF00($satzLine);
+                    if (!$satzF00) {
+                        $result->incCountError();
+                        $this->logger->err("Borderofile '" . $file->getFilename() . "' kann F00-Satz nicht verarbeiten (Zeile " . $currentLineNumber . ")!", ["classMethod"=>__METHOD__]);
+                        return NULL;
+                    }
+                    $satzD00->addSatzF00($satzF00);
                 }
                 
                 $currentLineNumber++;
@@ -128,6 +144,22 @@ class Bordero512Reader {
         $satz->setFreierText1($txt1 ? $txt1 : ""); //possible!
         $satz->setFreierText2(self::parseString(substr($line, 83 - 1, 70)));
         $satz->setFreierText3(self::parseString(substr($line, 156 - 1, 70)));
+        return $satz;
+    }
+
+    private static function parseLineSatzD00(string $line): ?Bordero512SatzD00 {
+        $satz = new Bordero512SatzD00(self::parseInt(substr($line, 4 - 1, 3)));
+        $satz->setSendungsPosition(self::parseInt(substr($line, 7 - 1, 3)));
+        $satz->setPackstueckAnzahl(self::parseInt(substr($line, 10 - 1, 4)));
+        $satz->setVerpackungsArt(self::parseString(substr($line, 14 - 1, 3)));
+        $satz->setWarenInhalt(self::parseString(substr($line, 24 - 1, 35)));
+        return $satz;
+    }
+    
+    private static function parseLineSatzF00(string $line): ?Bordero512SatzF00 {
+        $satz = new Bordero512SatzF00(self::parseInt(substr($line, 4 - 1, 3)));
+        $satz->setSendungsPosition(self::parseInt(substr($line, 7 - 1, 3)));
+        $satz->setBarcode(self::parseString(substr($line, 10 - 1, 35)));
         return $satz;
     }
     

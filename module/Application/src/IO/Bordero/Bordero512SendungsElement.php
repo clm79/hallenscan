@@ -18,6 +18,9 @@ class Bordero512SendungsElement {
     /* @var Bordero512SatzH10 */
     private $satzH10;
 
+    /* @var Bordero512SatzD00[] */
+    private $satzD00s = array();
+
     public function getSatzB00s() {
         return $this->satzB00s;
     }
@@ -50,6 +53,14 @@ class Bordero512SendungsElement {
 
     public function setSatzH10(?Bordero512SatzH10 $satzH10) {
         $this->satzH10 = $satzH10;
+    }
+
+    public function getSatzD00s() {
+        return $this->satzD00s;
+    }
+
+    public function addSatzD00(Bordero512SatzD00 $satzD00) {
+        $this->satzD00s[] = $satzD00;
     }
 
 }

@@ -16,6 +16,8 @@ use Application\IO\Bordero\Bordero512Const;
 use Application\IO\Bordero\Bordero512Document;
 use Application\IO\Bordero\Bordero512Reader;
 use Application\IO\Bordero\Bordero512SendungsElement;
+use Application\IO\Bordero\Bordero512SatzD00;
+use Application\IO\Bordero\Bordero512SatzF00;
 use Application\IO\Bordero\BorderoFileImportResult;
 use SplFileObject;
 use Symfony\Component\Finder\Finder;
@@ -226,13 +228,38 @@ class BorderoFileManager {
                         $sendung->setSendungsnummer($sendungsElement->getSatzG00()->getSendungsNummer());
                         $sendung->setGewicht(round($sendungsElement->getSatzG00()->getTatsaechlichesGewicht()));
                         $hinweisText = NULL;
-                        if($sendungsElement->getSatzH10()) {
+                        if ($sendungsElement->getSatzH10()) {
                             $h10 = $sendungsElement->getSatzH10();
                             $hinweisText = $h10->getFreierText1();
-                            if($h10->getFreierText2()) $hinweisText .= $h10->getFreierText2 ();
-                            if($h10->getFreierText3()) $hinweisText .= $h10->getFreierText3 ();
+                            if ($h10->getFreierText2())
+                                $hinweisText .= $h10->getFreierText2();
+                            if ($h10->getFreierText3())
+                                $hinweisText .= $h10->getFreierText3();
                         }
                         $sendung->setHinweisText($hinweisText);
+
+                        /* @var $satzD00 Bordero512SatzD00 */
+                        foreach ($sendungsElement->getSatzD00s() as $satzD00) {
+                            /* @var $satzD00 Bordero512SatzF00 */
+                            $colliCount = 0;
+                            foreach ($satzD00->getSatzF00s() as $satzF00) {
+                                $colli = new Colli();
+                                $colli->setSendung($sendung);
+                                $colli->setZeitstempel(new \DateTime());
+                                $colli->setBarcode($satzF00->getBarcode());
+                                $colli->setAnzahlLademittel($satzD00->getPackstueckAnzahl());
+                                $colli->setLademittelart($satzD00->getVerpackungsArt());
+                                $colli->setWareninhalt($satzD00->getWarenInhalt());
+                                $this->entityManager->persist($colli);
+                                $colliCount++;
+                            }
+
+                            if ($colliCount != $satzD00->getPackstueckAnzahl()) {
+                                $result->incCountWarning();
+                                $this->logger->warn("Borderofile '" . $file->getFilename() . "' D00-PackstueckAnzahl<>F00-Barcodes Position:" . $sendung->getBorderoPosition(), ["classMethod" => __METHOD__]);
+                            }
+                        }
+
                         $this->entityManager->persist($sendung);
                     }
 
