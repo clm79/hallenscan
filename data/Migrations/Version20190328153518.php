@@ -98,8 +98,6 @@ final class Version20190328153518 extends AbstractMigration {
     }
 
     public function postUp(Schema $schema): void {
-//        $this->connection->executeQuery('INSERT INTO partner VALUES (1, NOW(), 1, "CTL", "096", "\\\\\\\\BFSERVER\\\\apps\\\\CTL_FTP", "20*.096");');
-//        $this->connection->executeQuery('INSERT INTO partner VALUES (2, NOW(), 0, "VTL", "04961", "\\\\\\\\BFSERVER\\\\apps\\\\VTL_FTP\\\\In", "04961_de_20*.txt");');
         $this->connection->executeQuery('INSERT INTO partner VALUES (1, NOW(), 1, "CTL", "096", "D:\\\\Temp\\\\hallenscan_testdata\\\\CTL_FTP", "20*.096");');
         $this->connection->executeQuery('INSERT INTO partner VALUES (2, NOW(), 1, "VTL", "04961", "D:\\\\Temp\\\\hallenscan_testdata\\\\VTL_FTP\\\\In", "04961_de_20*.txt");');
         $this->connection->executeQuery('INSERT INTO partner VALUES (3, NOW(), 0, "Test Inaktiv", "XYZ", "C:\\\\Temp\\\\Inaktiv", "*.txt");');

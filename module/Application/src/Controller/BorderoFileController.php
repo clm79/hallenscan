@@ -74,7 +74,8 @@ class BorderoFileController extends AbstractActionController {
             }
             // Render the view template.
             return new ViewModel([
-                'form' => $form
+                'form' => $form,
+                'messages' => $this->flashMessenger()->getMessages()
             ]);
         } else {
             $partners = $this->entityManager->getRepository(Partner::class)->findAll();

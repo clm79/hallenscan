@@ -4,6 +4,7 @@ use Application\Controller\BorderoFileController;
 use Zend\Session\Container;
 
 $form = $this->form;
+$form->setAttribute('action', $this->url('bordero-file', ['action' => 'import']));
 $form->get('submit')->setAttributes(['class' => 'btn btn-primary']);
 $form->prepare();
 

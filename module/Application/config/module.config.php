@@ -53,6 +53,17 @@ return [
                 ],
             ],
             [
+                'label' => 'Entlade-Scan',
+                'route' => 'entlade-scan',
+                'pages' => [
+                    [
+                        'label' => 'Scan',
+                        'route' => 'entlade-scan',
+                        'action' => 'scan',
+                    ],
+                ],
+            ],
+            [
                 'label' => 'Log-Protokoll',
                 'route' => 'log',
                 'pages' => [
@@ -103,6 +114,19 @@ return [
                     ],
                 ],
             ],
+            'entlade-scan' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/entlade-scan[/:action]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],                    
+                    'defaults' => [
+                        'controller' => Controller\EntladeScanController::class,
+                        'action' => 'index',
+                    ],
+                ],
+            ],
             'log' => [
                 'type' => Segment::class,
                 'options' => [
@@ -122,6 +146,7 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\BorderoFileController::class => Controller\Factory\BorderoFileControllerFactory::class,
+            Controller\EntladeScanController::class => Controller\Factory\EntladeScanControllerFactory::class,
             Controller\LogController::class => Controller\Factory\LogControllerFactory::class,
         ],
     ],

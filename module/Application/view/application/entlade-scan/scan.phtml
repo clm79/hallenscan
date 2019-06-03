@@ -1,0 +1,104 @@
+<?php
+
+use Application\Controller\EntladeScanController;
+use Zend\Session\Container;
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('entlade-scan', ['action' => 'scan']));
+$form->get('barcode')->setAttribute('class', 'form-control');
+$form->get('barcode')->setAttribute('autocomplete', 'off');
+$form->get('barcode')->setAttribute('placeholder', 'Barcode');
+$form->get('barcode')->setAttribute('autofocus', 'true');
+
+$form->get('submit')->setAttributes(['class' => 'btn btn-primary']);
+$form->prepare();
+
+/* @var Application\Entity\Colli $colli */
+$colli = $this->colli;
+
+/* @var Application\Entity\NvRelation $nvRelation */
+$nvRelation = $this->nvRelation;
+
+$sessionContainer = new Container('session');
+$requestId = $sessionContainer[EntladeScanController::SESSION_KEY_REQUEST_ID];
+?>
+<h1>Entlade-Scan</h1>
+<?php echo $this->flashMessenger()->render(); ?>
+<?php if (isset($requestId)): ?>
+    <p>
+    <ul>
+        <li><a href="<?= $this->url('log', ['action' => 'list'], ['query' => ['requestId' => $requestId]]) ?>">Log-Protokoll des letzten Scans</a></li>
+    </ul>
+    </p>
+<?php endif; ?>
+<?= $this->form()->openTag($form); ?>
+<div class="form-group">
+    <?= $this->formLabel($form->get('barcode')) ?>
+    <?= $this->formElement($form->get('barcode')) ?>
+    <?= $this->formElementErrors()->render($form->get('barcode'), ['class' => 'help-block']) ?>
+</div>
+<?= $this->form()->closeTag(); ?>
+
+<?php if ($colli): ?>
+    <div class="row">
+        <div class="col-xs-2">NVE:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getBarcode()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Partner:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getSendung()->getBordero()->getHub()->getPartner()->getName()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">HUB:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getSendung()->getBordero()->getHub()->getName()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Name1:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getSendung()->getEmpfaengerName1()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Name2:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getSendung()->getEmpfaengerName2()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Stra&szlig;e:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getSendung()->getEmpfaengerStrasse()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Ort:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getSendung()->getEmpfaengerLand() . ' ' . $colli->getSendung()->getEmpfaengerPlz() . ' ' . $colli->getSendung()->getEmpfaengerOrt()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Relation:</div>
+        <strong style="font-size: 24pt;">
+        <div class="col-xs-10">
+            <?php if ($nvRelation): ?>
+                <?= $this->escapeHtml($nvRelation->getRelation()); ?>
+            <?php else: ?>        
+                Unbekannt
+            <?php endif; ?>
+        </div>
+        </strong>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Gewicht:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getSendung()->getGewicht()); ?> kg</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">LM:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getAnzahlLademittel().' '.$colli->getLademittelart()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Inhalt:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getWareninhalt()); ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">Hinweis:</div>
+        <div class="col-xs-10"><?= $this->escapeHtml($colli->getSendung()->getHinweisText()); ?></div>
+    </div>
+<?php endif; ?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input:visible:enabled:first').focus();
+    });
+</script>
